@@ -1,23 +1,17 @@
 // Require the necessary discord.js classes
-import { Client, Events, GatewayIntentBits, Collection, SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { Client, Events, GatewayIntentBits, Collection } from 'discord.js';
 require('dotenv').config();
-import { ping } from './commands';
-import play from './commands/play';
+import { Command, ping, play, stop } from './commands';
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds,
 	 GatewayIntentBits.GuildMessages,
 	GatewayIntentBits.GuildVoiceStates] });
 
-export type Command = {
-	name: string,
-	data: SlashCommandBuilder,
-	execute(interaction: ChatInputCommandInteraction): Promise<void>; 
-}
-
 const commands = new Collection<string, Command>();
 commands.set(ping.name, ping);
 commands.set(play.name, play);
+commands.set(stop.name, stop);
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
@@ -43,6 +37,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
+
+client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+	if (!oldState.member || oldState.member.user.bot) return;
+
+	if (newState.channelId === null) return;
+
+	if (oldState.channelId === null || oldState.channelId != newState.channelId) {
+		console.log(oldState.member.user.username + ' joined channel ' + newState.channel?.name + ' in server ' + newState.guild.name);
+		return;
+	}
+	
+})
 
 // Log in to Discord with your client's token
 client.login(process.env.BOT_TOKEN);

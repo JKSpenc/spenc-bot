@@ -1,12 +1,11 @@
 import { REST, Routes } from 'discord.js';
 require('dotenv').config();
-import { ping } from './commands';
-import play from './commands/play';
-
+import { ping, play, stop } from './commands';
 
 const commands = [
 	ping.data.toJSON(),
-	play.data.toJSON()
+	play.data.toJSON(),
+	stop.data.toJSON()
 ];
 
 // Construct and prepare an instance of the REST module
@@ -19,9 +18,13 @@ type HasLength = { length : number }
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
+		await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID??'', process.env.GUILD_ID??''),
+			{ body: [] },
+		)
+
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const data : HasLength = await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID??'', process.env.GUILD_ID??''),
+			Routes.applicationCommands(process.env.CLIENT_ID??''),
 			{ body: commands },
 		) as HasLength;
 
