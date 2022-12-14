@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { AudioPlayerStatus, entersState } from '@discordjs/voice';
 import { Command } from '..'
-import { audioPlayers } from '../../players';
+import { audioPlayers } from '../../globals';
 
 const execute = async (interaction: ChatInputCommandInteraction) => {
     if (!interaction.guildId) return;
@@ -17,7 +17,7 @@ const execute = async (interaction: ChatInputCommandInteraction) => {
 
 const builder = new SlashCommandBuilder()
     .setName('stop')
-    .setDescription('\Stops the currently playing audio and disconnects the bot from channel')
+    .setDescription('Stops the currently playing audio and disconnects the bot from channel')
 
 export const stop = {
     name: builder.name,

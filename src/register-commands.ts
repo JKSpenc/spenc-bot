@@ -1,11 +1,12 @@
 import { REST, Routes } from 'discord.js';
 require('dotenv').config();
-import { ping, play, stop } from './commands';
+import { ping, play, setintro, stop } from './commands';
 
 const commands = [
 	ping.data.toJSON(),
 	play.data.toJSON(),
-	stop.data.toJSON()
+	stop.data.toJSON(),
+	setintro.data.toJSON(),
 ];
 
 // Construct and prepare an instance of the REST module

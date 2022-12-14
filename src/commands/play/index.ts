@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { AudioPlayerStatus, createAudioPlayer, createAudioResource, DiscordGatewayAdapterCreator, entersState, joinVoiceChannel, VoiceConnectionStatus } from '@discordjs/voice';
 import ytdl, { videoInfo } from 'ytdl-core';
 import { Command } from '..'
-import { audioPlayers } from '../../players';
+import { audioPlayers } from '../../globals';
 
 const execute = async (interaction: ChatInputCommandInteraction) => {
     const url = interaction.options.getString('url');
